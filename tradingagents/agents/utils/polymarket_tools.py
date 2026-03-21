@@ -40,6 +40,48 @@ def _api_get(url: str, params: Optional[dict] = None) -> dict:
     raise last_exc
 
 
+def _resolve_event(event_id: str) -> dict:
+    """Resolve an event by numeric ID, slug, or keyword search.
+
+    Tries in order:
+    1. Direct numeric ID lookup: /events/{id}
+    2. Slug query: /events?slug={slug}
+    3. Keyword search: fetch active events and match title/slug
+    Returns the event dict or raises ValueError.
+    """
+    # 1. Try direct ID (numeric)
+    if event_id.isdigit():
+        try:
+            return _api_get(f"{GAMMA_BASE}/events/{event_id}")
+        except Exception:
+            pass
+
+    # 2. Try slug query
+    try:
+        results = _api_get(f"{GAMMA_BASE}/events", params={"slug": event_id})
+        if isinstance(results, list) and results:
+            return results[0]
+    except Exception:
+        pass
+
+    # 3. Keyword search fallback — fetch active events and match
+    keywords = event_id.replace("-", " ").lower().split()
+    try:
+        events = _api_get(f"{GAMMA_BASE}/events", params={
+            "limit": 100, "active": "true", "closed": "false",
+        })
+        if isinstance(events, list):
+            for evt in events:
+                title = (evt.get("title", "") or "").lower()
+                slug = (evt.get("slug", "") or "").lower()
+                if all(kw in title or kw in slug for kw in keywords[:3]):
+                    return evt
+    except Exception:
+        pass
+
+    raise ValueError(f"Could not resolve event: {event_id}")
+
+
 # ---------------------------------------------------------------------------
 # Tool 1: get_market_data
 # ---------------------------------------------------------------------------
@@ -59,7 +101,7 @@ def get_market_data(event_id: str) -> str:
         A formatted Markdown string with event metadata and market prices.
     """
     try:
-        data = _api_get(f"{GAMMA_BASE}/events/{event_id}")
+        data = _resolve_event(event_id)
     except Exception as exc:
         return f"## Error fetching market data\n\nFailed to retrieve data for event `{event_id}`:\n{exc}"
 
@@ -189,7 +231,7 @@ def get_event_details(event_id: str) -> str:
         A formatted Markdown string with event details.
     """
     try:
-        data = _api_get(f"{GAMMA_BASE}/events/{event_id}")
+        data = _resolve_event(event_id)
     except Exception as exc:
         return f"## Error fetching event details\n\nFailed for event `{event_id}`:\n{exc}"
 
