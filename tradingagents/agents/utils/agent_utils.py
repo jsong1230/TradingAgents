@@ -17,7 +17,11 @@ from tradingagents.agents.utils.polymarket_tools import (
 
 
 def create_msg_delete():
-    """Create a message deletion node."""
+    """Create a message deletion node. Keeps one human message to avoid empty messages error on some LLM APIs."""
     def msg_delete(state: AgentState):
-        return {"messages": [RemoveMessage(id=m.id) for m in state["messages"]]}
+        msgs = state["messages"]
+        if len(msgs) <= 1:
+            return {"messages": []}
+        # Remove all but keep the first message (initial human prompt)
+        return {"messages": [RemoveMessage(id=m.id) for m in msgs[1:]]}
     return msg_delete
