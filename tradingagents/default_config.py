@@ -8,10 +8,10 @@ DEFAULT_CONFIG = {
         "dataflows/data_cache",
     ),
     # LLM settings
-    "llm_provider": "openrouter",
-    "deep_think_llm": "z-ai/glm-4.5-air:free",
-    "quick_think_llm": "nvidia/nemotron-3-nano-30b-a3b:free",
-    "backend_url": "https://openrouter.ai/api/v1",
+    "llm_provider": "openai",  # uses OpenAI-compatible API
+    "deep_think_llm": "glm-4.5-flash",
+    "quick_think_llm": "glm-4.5-flash",
+    "backend_url": "https://open.bigmodel.cn/api/paas/v4",
     # Provider-specific thinking configuration
     "google_thinking_level": None,
     "openai_reasoning_effort": None,
