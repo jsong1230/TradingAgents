@@ -25,3 +25,5 @@ tweepy
 praw
 pydantic
 streamlit
+python-telegram-bot[job-queue]
+apscheduler
