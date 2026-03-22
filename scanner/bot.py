@@ -159,7 +159,7 @@ async def cmd_bet(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         msg = format_bet_message(bet_result, result["event_title"])
-        await update.message.reply_text(msg, parse_mode="MarkdownV2")
+        await update.message.reply_text(msg)
 
     except Exception as e:
         logger.error(f"Bet failed: {e}")
@@ -312,7 +312,6 @@ async def _run_scan(context: ContextTypes.DEFAULT_TYPE, chat_id: int = None):
                             await context.bot.send_message(
                                 chat_id=target_chat,
                                 text=msg,
-                                parse_mode="MarkdownV2",
                             )
 
             await context.bot.send_message(

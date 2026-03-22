@@ -152,28 +152,27 @@ def execute_bet(
 
 
 def format_bet_message(result: dict, event_title: str) -> str:
-    """Format bet execution result for Telegram notification."""
+    """Format bet execution result for Telegram notification (plain text)."""
     if result["dry_run"]:
-        prefix = "🧪 *DRY RUN*"
+        prefix = "🧪 DRY RUN"
     elif result["status"] == "placed":
-        prefix = "💰 *BET PLACED*"
+        prefix = "💰 BET PLACED"
     elif result["status"] == "failed":
-        prefix = "❌ *BET FAILED*"
+        prefix = "❌ BET FAILED"
     else:
-        prefix = "📋 *BET STATUS*"
+        prefix = "📋 BET STATUS"
 
-    from scanner.formatter import _escape
     lines = [
-        f"{prefix}",
-        f"Event: {_escape(event_title)}",
+        prefix,
+        f"Event: {event_title}",
         f"Side: {result['side']} @ {result['price']}",
-        f"Size: {result['size']} \\(${result['amount_usdc']:.2f}\\)",
+        f"Size: {result['size']} (${result['amount_usdc']:.2f})",
     ]
 
     if result.get("order_id"):
-        lines.append(f"Order: `{result['order_id'][:20]}`")
+        lines.append(f"Order: {result['order_id'][:20]}")
     if result.get("error"):
-        lines.append(f"Error: {_escape(result['error'])}")
+        lines.append(f"Error: {result['error']}")
 
     return "\n".join(lines)
 
