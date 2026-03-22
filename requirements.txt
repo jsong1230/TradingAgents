@@ -24,3 +24,4 @@ tavily-python
 tweepy
 praw
 pydantic
+streamlit

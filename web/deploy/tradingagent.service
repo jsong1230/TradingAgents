@@ -1,0 +1,15 @@
+[Unit]
+Description=PolyAgent Streamlit Web UI
+After=network.target
+
+[Service]
+Type=simple
+User=jsong
+WorkingDirectory=/home/jsong/TradingAgents
+ExecStart=/home/jsong/TradingAgents/.venv/bin/streamlit run web/app.py --server.port 8501 --server.address 0.0.0.0 --server.headless true
+Restart=always
+RestartSec=5
+EnvironmentFile=/home/jsong/TradingAgents/.env
+
+[Install]
+WantedBy=multi-user.target
