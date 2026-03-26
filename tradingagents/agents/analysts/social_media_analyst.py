@@ -21,6 +21,7 @@ def create_social_media_analyst(llm):
             "Write a comprehensive report on public sentiment and large trader behavior. "
             "Do not simply state the trends are mixed — provide detailed and fine-grained analysis and insights that may help traders make decisions."
             " Make sure to append a Markdown table at the end of the report to organize key points in the report, organized and easy to read."
+            + " 모든 분석과 리포트는 한국어로 작성하세요."
         )
 
         prompt = ChatPromptTemplate.from_messages(

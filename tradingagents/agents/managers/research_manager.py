@@ -41,7 +41,8 @@ Here are your past reflections on mistakes:
 
 Here is the debate:
 Debate History:
-{history}"""
+{history}
+모든 분석과 리포트는 한국어로 작성하세요."""
 
         response = llm.invoke(prompt)
 

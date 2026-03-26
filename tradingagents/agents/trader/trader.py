@@ -33,7 +33,9 @@ def create_trader(llm, memory):
 
 Consider the edge (difference between your estimated probability and market price), position sizing, and risk management. End with a firm decision and always conclude your response with 'FINAL PREDICTION: **YES/NO/SKIP** | Confidence: X.X | Edge: X.X' to confirm your recommendation.
 
-Utilize lessons from past decisions to learn from mistakes: {past_memory_str}""",
+Utilize lessons from past decisions to learn from mistakes: {past_memory_str}
+
+모든 분석과 리포트는 한국어로 작성하세요.""",
             },
             context,
         ]

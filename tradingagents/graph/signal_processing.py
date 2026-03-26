@@ -24,7 +24,8 @@ Return ONLY a valid JSON object with these exact fields:
 Analysis:
 {full_signal}
 
-Return ONLY the JSON object, no other text."""
+Return ONLY the JSON object, no other text.
+응답은 한국어로 작성하되, JSON 키는 영어로 유지하세요."""
 
         response = self.llm.invoke(prompt)
         content = response.content if hasattr(response, "content") else str(response)

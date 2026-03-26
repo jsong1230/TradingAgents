@@ -16,6 +16,7 @@ def create_event_analyst(llm):
             "Use get_event_details to retrieve the event description and resolution criteria. Use get_market_stats to get open interest and trading statistics. Use get_leaderboard_signals to understand what top traders are positioning. "
             "Write a detailed analytical report with specific observations. Do not simply say outcomes are uncertain — provide reasoned probability assessments based on the resolution criteria and market data. "
             "Append a Markdown table summarizing key findings at the end."
+            + " 모든 분석과 리포트는 한국어로 작성하세요."
         )
 
         prompt = ChatPromptTemplate.from_messages([

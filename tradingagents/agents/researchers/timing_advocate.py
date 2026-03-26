@@ -43,7 +43,8 @@ Last YES argument: {current_yes_response}
 Last NO argument: {current_no_response}
 Lessons from past predictions: {past_memory_str}
 
-Provide a rigorous timing and value analysis. Address past mistakes and learn from them."""
+Provide a rigorous timing and value analysis. Address past mistakes and learn from them.
+모든 분석과 리포트는 한국어로 작성하세요."""
 
         response = llm.invoke(prompt)
         argument = f"Timing Advocate: {response.content}"

@@ -16,6 +16,7 @@ def create_odds_analyst(llm):
             "Use get_market_data to fetch current event prices and metadata. Use get_price_history with the token_id from market data to analyze price trends. Use get_orderbook to examine bid/ask depth. "
             "Write a detailed analytical report with specific numbers and trends. Do not simply say trends are mixed — provide actionable insights about whether the current market price fairly reflects the probability. "
             "Append a Markdown table summarizing key metrics at the end."
+            + " 모든 분석과 리포트는 한국어로 작성하세요."
         )
 
         prompt = ChatPromptTemplate.from_messages([
