@@ -144,11 +144,20 @@ def get_market_data(event_id: str) -> str:
         spread = mkt.get("spread", "N/A")
         mkt_volume = mkt.get("volume", "N/A")
 
+        # Extract token IDs for price_history and orderbook calls
+        raw_token_ids = mkt.get("clobTokenIds", "[]")
+        try:
+            token_ids = json.loads(raw_token_ids) if isinstance(raw_token_ids, str) else raw_token_ids
+        except (json.JSONDecodeError, TypeError):
+            token_ids = []
+
         lines.append(f"\n**{q}**")
         for i, outcome in enumerate(outcomes):
             price = prices[i] if i < len(prices) else "N/A"
-            lines.append(f"  - {outcome}: {price}")
+            tid = token_ids[i] if i < len(token_ids) else "N/A"
+            lines.append(f"  - {outcome}: {price} (token_id: {tid})")
         lines.append(f"  - Spread: {spread} | Volume: {mkt_volume}")
+        lines.append(f"  - Market ID: {mkt.get('id', 'N/A')} | Condition ID: {mkt.get('conditionId', 'N/A')}")
 
     return "\n".join(lines)
 

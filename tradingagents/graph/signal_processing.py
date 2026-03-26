@@ -12,20 +12,21 @@ class SignalProcessor:
 
     def process_signal(self, full_signal: str) -> str:
         """Extract structured JSON decision from the final decision text."""
-        prompt = f"""Extract the final prediction decision from the following analysis.
-Return ONLY a valid JSON object with these exact fields:
-- "action": one of "YES", "NO", or "SKIP"
-- "confidence": a float between 0.0 and 1.0
-- "edge": estimated probability minus market price (float, can be negative)
-- "position_size": recommended bet size as fraction of bankroll (float 0.0-1.0)
-- "reasoning": one sentence summary
-- "time_horizon": time until event resolution
+        prompt = f"""아래 분석에서 최종 예측 결정을 추출하세요.
 
-Analysis:
+규칙:
+- "action"은 반드시 분석 내용과 일치해야 합니다. 이벤트 발생 가능성이 높으면 "YES", 낮으면 "NO", 판단 불가하면 "SKIP".
+- "reasoning"은 action과 모순되지 않아야 합니다.
+- "confidence"는 0.0~1.0 사이 값 (예: 0.7 = 70% 확신)
+- "edge"는 내 추정 확률 - 현재 시장가 (양수면 저평가, 음수면 고평가)
+
+JSON 키는 영어, 값(reasoning)은 한국어로 작성하세요.
+
+분석:
 {full_signal}
 
-Return ONLY the JSON object, no other text.
-응답은 한국어로 작성하되, JSON 키는 영어로 유지하세요."""
+아래 형식의 JSON만 반환하세요:
+{{"action": "YES/NO/SKIP", "confidence": 0.0, "edge": 0.0, "position_size": 0.0, "reasoning": "한국어 요약", "time_horizon": "기간"}}"""
 
         response = self.llm.invoke(prompt)
         content = response.content if hasattr(response, "content") else str(response)

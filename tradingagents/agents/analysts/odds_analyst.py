@@ -13,7 +13,7 @@ def create_odds_analyst(llm):
         system_message = (
             "You are a prediction market odds analyst. Your role is to analyze the current market odds, price history, and orderbook depth for a Polymarket event. "
             "Focus on: price trends and momentum, orderbook asymmetry (bid vs ask depth), volume patterns and liquidity, spread analysis, and smart money flow indicators. "
-            "Use get_market_data to fetch current event prices and metadata. Use get_price_history with the token_id from market data to analyze price trends. Use get_orderbook to examine bid/ask depth. "
+            "Use get_market_data to fetch current event prices and metadata. The response includes token_id for each outcome — use these EXACT token_id values (long numeric strings) when calling get_price_history and get_orderbook. Do NOT use the event slug as token_id. "
             "Write a detailed analytical report with specific numbers and trends. Do not simply say trends are mixed — provide actionable insights about whether the current market price fairly reflects the probability. "
             "Append a Markdown table summarizing key metrics at the end."
             + " 모든 분석과 리포트는 한국어로 작성하세요."
