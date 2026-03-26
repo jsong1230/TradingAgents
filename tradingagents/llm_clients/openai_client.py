@@ -58,6 +58,14 @@ class OpenAIClient(BaseLLMClient):
             llm_kwargs["api_key"] = "ollama"  # Ollama doesn't require auth
         elif self.base_url:
             llm_kwargs["base_url"] = self.base_url
+            # vLLM/local servers don't require auth
+            if "api_key" not in self.kwargs:
+                llm_kwargs["api_key"] = "not-needed"
+            # Disable thinking for models that support it (e.g., Qwen3)
+            if "qwen" in self.model.lower():
+                llm_kwargs["model_kwargs"] = {
+                    "extra_body": {"chat_template_kwargs": {"enable_thinking": False}}
+                }
 
         for key in ("timeout", "max_retries", "reasoning_effort", "api_key", "callbacks", "http_client", "http_async_client"):
             if key in self.kwargs:

@@ -9,9 +9,9 @@ DEFAULT_CONFIG = {
     ),
     # LLM settings
     "llm_provider": "openai",  # uses OpenAI-compatible API
-    "deep_think_llm": "glm-4.5-flash",
-    "quick_think_llm": "glm-4.5-flash",
-    "backend_url": "https://open.bigmodel.cn/api/paas/v4",
+    "deep_think_llm": "Qwen/Qwen3-32B",
+    "quick_think_llm": "Qwen/Qwen3-32B",
+    "backend_url": "http://192.168.0.150:8001/v1",
     # Provider-specific thinking configuration
     "google_thinking_level": None,
     "openai_reasoning_effort": None,
