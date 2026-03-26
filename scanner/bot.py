@@ -67,18 +67,17 @@ def get_config() -> dict:
 async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /start command."""
     await update.message.reply_text(
-        "🔮 *PolyAgent Bot*\n\n"
-        "*Analysis:*\n"
-        "/scan \\- Scan markets now\n"
-        "/analyze \\<event\\_id\\> \\- Analyze specific event\n"
-        "/status \\- Bot status\n\n"
-        "*Trading:*\n"
-        "/autobet \\- Toggle auto\\-betting on/off\n"
-        "/dryrun \\- Toggle dry run \\(simulation\\) mode\n"
-        "/bet \\<event\\_id\\> \\- Analyze \\+ bet on specific event\n"
-        "/limits \\- Show betting limits\n\n"
-        f"Auto\\-scan every {SCAN_INTERVAL_HOURS}h",
-        parse_mode="MarkdownV2",
+        "🔮 PolyAgent Bot\n\n"
+        "Analysis:\n"
+        "/scan - Scan markets now\n"
+        "/analyze <event_id> - Analyze specific event\n"
+        "/status - Bot status\n\n"
+        "Trading:\n"
+        "/autobet - Toggle auto-betting on/off\n"
+        "/dryrun - Toggle dry run (simulation) mode\n"
+        "/bet <event_id> - Analyze + bet on specific event\n"
+        "/limits - Show betting limits\n\n"
+        f"Auto-scan every {SCAN_INTERVAL_HOURS}h",
     )
 
 
@@ -104,14 +103,14 @@ async def cmd_analyze(update: Update, context: ContextTypes.DEFAULT_TYPE):
             result["decision"],
             result.get("event_slug", ""),
         )
-        await update.message.reply_text(summary, parse_mode="MarkdownV2")
+        await update.message.reply_text(summary, parse_mode=None)
 
         detailed = format_detailed(
             result["event_title"],
             result["decision"],
             result["reports"],
         )
-        await update.message.reply_text(detailed, parse_mode="MarkdownV2")
+        await update.message.reply_text(detailed, parse_mode=None)
 
     except Exception as e:
         logger.error(f"Analysis failed: {e}")
@@ -137,7 +136,7 @@ async def cmd_bet(update: Update, context: ContextTypes.DEFAULT_TYPE):
             decision,
             result.get("event_slug", ""),
         )
-        await update.message.reply_text(summary, parse_mode="MarkdownV2")
+        await update.message.reply_text(summary, parse_mode=None)
 
         # Check if we should bet
         should_bet, reason = should_execute(decision)
@@ -213,7 +212,7 @@ async def cmd_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
 
     msg = format_status(last_scan_time, next_scan, is_scanning)
-    await update.message.reply_text(msg, parse_mode="MarkdownV2")
+    await update.message.reply_text(msg, parse_mode=None)
 
 
 # ── Helpers ─────────────────────────────────────────────────────────────────
@@ -255,7 +254,6 @@ async def _run_scan(context: ContextTypes.DEFAULT_TYPE, chat_id: int = None):
         await context.bot.send_message(
             chat_id=target_chat,
             text=format_scan_start(MAX_EVENTS),
-            parse_mode="MarkdownV2",
         )
 
         results = scan_and_analyze(
@@ -270,8 +268,7 @@ async def _run_scan(context: ContextTypes.DEFAULT_TYPE, chat_id: int = None):
             await context.bot.send_message(
                 chat_id=target_chat,
                 text=format_no_edge(),
-                parse_mode="MarkdownV2",
-            )
+                )
         else:
             for r in results:
                 # Send analysis
@@ -283,8 +280,7 @@ async def _run_scan(context: ContextTypes.DEFAULT_TYPE, chat_id: int = None):
                 await context.bot.send_message(
                     chat_id=target_chat,
                     text=summary,
-                    parse_mode="MarkdownV2",
-                )
+                        )
 
                 detailed = format_detailed(
                     r["event_title"],
@@ -294,8 +290,7 @@ async def _run_scan(context: ContextTypes.DEFAULT_TYPE, chat_id: int = None):
                 await context.bot.send_message(
                     chat_id=target_chat,
                     text=detailed,
-                    parse_mode="MarkdownV2",
-                )
+                        )
 
                 # Auto-bet if enabled
                 if auto_bet_enabled:
@@ -317,8 +312,7 @@ async def _run_scan(context: ContextTypes.DEFAULT_TYPE, chat_id: int = None):
             await context.bot.send_message(
                 chat_id=target_chat,
                 text=format_scan_complete(MAX_EVENTS, len(results)),
-                parse_mode="MarkdownV2",
-            )
+                )
 
     except Exception as e:
         logger.error(f"Scan failed: {e}")
